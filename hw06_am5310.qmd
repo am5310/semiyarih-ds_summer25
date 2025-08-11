@@ -101,6 +101,28 @@ wordcloud(
 )
 ```
 
+```{r}
+afinn_pos <- get_sentiments("afinn") |>
+  filter(value >= 1)
+
+emma_afinn_pos <- emma_words |>
+  inner_join(afinn_pos, by = "word") |>
+  count(word, sort = TRUE) |>
+  filter(n > 50)
+
+ggplot(emma_afinn_pos, aes(x = reorder(word, n), y = n)) +
+  geom_col(fill = "forestgreen") +
+  coord_flip() +
+  labs(title = "Frequent Positive Words in Emma (AFINN)", x = NULL, y = "Count")
+
+wordcloud(
+  words = emma_afinn_pos$word,
+  freq = emma_afinn_pos$n,
+  max.words = 100,
+  colors = brewer.pal(8, "Paired")
+)
+```
+
 1.  **Push to GitHub**
 
     -   Push your complete R script (`.R` file) to a **GitHub repository**.
