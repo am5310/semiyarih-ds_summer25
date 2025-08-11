@@ -123,6 +123,28 @@ wordcloud(
 )
 ```
 
+```{r}
+bing_pos <- get_sentiments("bing") |>
+  filter(sentiment == "positive")
+
+emma_bing_pos <- emma_words |>
+  inner_join(bing_pos, by = "word") |>
+  count(word, sort = TRUE) |>
+  filter(n > 50)
+
+ggplot(emma_bing_pos, aes(x = reorder(word, n), y = n)) +
+  geom_col(fill = "purple") +
+  coord_flip() +
+  labs(title = "Frequent Positive Words in Emma (Bing)", x = NULL, y = "Count")
+
+wordcloud(
+  words = emma_bing_pos$word,
+  freq = emma_bing_pos$n,
+  max.words = 100,
+  colors = brewer.pal(8, "Set3")
+)
+```
+
 1.  **Push to GitHub**
 
     -   Push your complete R script (`.R` file) to a **GitHub repository**.
