@@ -79,6 +79,28 @@ emma_words <- emma |>
         -   Filter for frequently occurring words (`n > 50`).
         -   Visualize using a **bar chart** (`ggplot2`) and a **word cloud** (`wordcloud`).
 
+```{r}
+nrc_joy <- get_sentiments("nrc") |>
+  filter(sentiment == "joy")
+
+emma_nrc_joy <- emma_words |>
+  inner_join(nrc_joy, by = "word") |>
+  count(word, sort = TRUE) |>
+  filter(n > 50)
+
+ggplot(emma_nrc_joy, aes(x = reorder(word, n), y = n)) +
+  geom_col(fill = "deepskyblue") +
+  coord_flip() +
+  labs(title = "Frequent Joy Words in Emma (NRC)", x = NULL, y = "Count")
+
+wordcloud(
+  words = emma_nrc_joy$word,
+  freq = emma_nrc_joy$n,
+  max.words = 100,
+  colors = brewer.pal(8, "Dark2")
+)
+```
+
 1.  **Push to GitHub**
 
     -   Push your complete R script (`.R` file) to a **GitHub repository**.
