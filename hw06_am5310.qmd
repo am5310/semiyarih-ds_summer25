@@ -57,6 +57,14 @@ austen
 
     -   Use `unnest_tokens()` to tokenize text into individual words.
 
+```{r}
+emma <- austen |>
+  filter(book == "Emma")
+
+emma_words <- emma |>
+  unnest_tokens(word, text)
+```
+
 1.  **Sentiment Analysis**
 
     -   Filter joy/positive words from **each** of the three sentiment lexicons:
